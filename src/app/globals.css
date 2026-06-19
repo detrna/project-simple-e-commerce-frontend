@@ -28,3 +28,19 @@ body {
 /* * {
   outline: 1px solid #676767;
 } */
+
+.bg-black-1 {
+  background-color: #171717;
+}
+
+.bg-black-2 {
+  background-color: #272727;
+}
+
+.bg-black-3 {
+  background-color: #202020;
+}
+
+.text-white-1 {
+  color: #bababa;
+}
