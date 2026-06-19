@@ -83,12 +83,12 @@ export default function Home() {
 
   return (
     <div className="flex gap-8 p-8">
-      <div className="fixed w-64 h-screen">
+      <div className="fixed h-screen w-64">
         <Sidebar />
       </div>
-      <div className="flex flex-col gap-4 ml-[22vw] flex-1">
-        <div className="fixed right-8 bg-black-4 p-1 px-4 rounded-lg">
-          <div className="flex w-full justify-end items-center gap-1 cursor-pointer">
+      <div className="ml-[22vw] flex flex-1 flex-col gap-4">
+        <div className="bg-black-4 fixed right-8 rounded-lg p-1 px-4">
+          <div className="flex w-full cursor-pointer items-center justify-end gap-1">
             <p className="text-white-3 text-lg" onClick={() => log()}>
               SORT BY
             </p>
@@ -96,13 +96,13 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="mt-16 flex flex-wrap w-full gap-y-8 justify-between">
+        <div className="mt-16 flex w-full flex-wrap justify-between gap-y-8">
           {generateItems(products)}
         </div>
 
         {hasMore && (
           <div
-            className="flex justify-center h-12 items-center"
+            className="flex h-12 items-center justify-center"
             ref={observerTarget}
           >
             {loading && (

@@ -25,7 +25,7 @@ export default function page() {
   }, []);
 
   return (
-    <div className="w-screen h-[200vh]">
+    <div className="h-[200vh] w-screen">
       <p ref={observerTarget} className="absolute top-[190vh]">
         test
       </p>

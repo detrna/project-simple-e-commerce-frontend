@@ -39,14 +39,14 @@ function formatSold(sold: number): string {
 
 export function Item(props: itemDetails) {
   return (
-    <div className="flex flex-col w-[16vw] justify-center gap-1">
-      <div className="flex justify-center items-center aspect-square rounded-3xl overflow-hidden">
+    <div className="flex w-[16vw] flex-col justify-center gap-1">
+      <div className="flex aspect-square items-center justify-center overflow-hidden rounded-3xl">
         <Link className="size-full" href={baseURL + "/products/" + props.id}>
           <img className="size-full" src={props.image} alt={props.name} />
         </Link>
       </div>
       <div className="flex justify-between px-3 pb-3">
-        <div className="flex flex-col gap-4 w-full">
+        <div className="flex w-full flex-col gap-4">
           <div className="flex flex-col -space-y-0.5">
             <p className="text-white-1 text-lg">{props.name}</p>
             <p className="text-white-2 text-xs whitespace-nowrap">
@@ -56,11 +56,11 @@ export function Item(props: itemDetails) {
           <p className="text-white-1">${props.price}</p>
         </div>
         <div className="flex flex-col justify-between">
-          <div className="flex justify-end w-full gap-0.5">
-            <p className="text-white-1 text-[1rem] pt-0.5">{props.star}</p>
+          <div className="flex w-full justify-end gap-0.5">
+            <p className="text-white-1 pt-0.5 text-[1rem]">{props.star}</p>
             <p className="text-white-1 text-lg">★</p>
           </div>
-          <p className="whitespace-nowrap text-white-2">
+          <p className="text-white-2 whitespace-nowrap">
             {formatSold(props.sold)} sold
           </p>
         </div>

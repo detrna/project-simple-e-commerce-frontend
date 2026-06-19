@@ -2,25 +2,25 @@ import Link from "next/link";
 
 export function Navbar() {
   return (
-    <div className="flex gap-12 h-[7.5vh] items-center px-4 bg-black-1">
+    <div className="bg-black-1 flex h-[7.5vh] items-center gap-12 px-4">
       <div className="flex w-[14vw] justify-center">
         <Link href={"/"}>
-          <h1 className="text-[1.2rem] font-normal text-white-1 cursor-pointer">
+          <h1 className="text-white-1 cursor-pointer text-[1.2rem] font-normal">
             Simple E-Commerce
           </h1>
         </Link>
       </div>
-      <div className="flex-1 bg-black-2 py-1 px-4 rounded-md">
+      <div className="bg-black-2 flex-1 rounded-md px-4 py-1">
         <input
-          className="w-full bg-black-2 opacity-35 text-white-1 outline-none"
+          className="bg-black-2 text-white-1 w-full opacity-35 outline-none"
           placeholder="Search here . . ."
         ></input>
       </div>
-      <div className="size-8 flex items-center cursor-pointer">
+      <div className="flex size-8 cursor-pointer items-center">
         <img src={"/ShoppingCartSimple.svg"} />
       </div>
-      <div className="h-full flex gap-4 items-center">
-        <p className="font-normal text-white-1 text-[1.2rem]">Username</p>
+      <div className="flex h-full items-center gap-4">
+        <p className="text-white-1 text-[1.2rem] font-normal">Username</p>
         <img className="size-8 cursor-pointer" src={"/avatar.svg"}></img>
       </div>
     </div>

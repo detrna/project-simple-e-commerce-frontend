@@ -33,7 +33,7 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className={`min-h-full flex flex-col ${inter.className}`}>
+      <body className={`flex min-h-full flex-col ${inter.className}`}>
         <nav className="sticky top-0 w-full">
           <Navbar></Navbar>
         </nav>
