@@ -2,7 +2,7 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #222222;
 }
 
 @theme inline {
@@ -14,7 +14,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: #222222;
     --foreground: #ededed;
   }
 }
@@ -24,10 +24,6 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
-
-/* * {
-  outline: 1px solid #676767;
-} */
 
 .bg-black-1 {
   background-color: #171717;
@@ -41,6 +37,22 @@ body {
   background-color: #202020;
 }
 
+.bg-black-4 {
+  background-color: #272727;
+}
+
+.bg-black-5 {
+  background-color: #303030;
+}
+
 .text-white-1 {
   color: #bababa;
+}
+
+.text-white-2 {
+  color: #939393;
+}
+
+.text-white-3 {
+  color: #737373;
 }

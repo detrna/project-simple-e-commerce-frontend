@@ -34,7 +34,9 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className={`min-h-full flex flex-col ${inter.className}`}>
-        <Navbar></Navbar>
+        <nav className="sticky top-0 w-full">
+          <Navbar></Navbar>
+        </nav>
         {children}
       </body>
     </html>
