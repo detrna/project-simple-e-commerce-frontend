@@ -1,6 +1,8 @@
+import { baseURL } from "@/@types/Constants";
 import Link from "next/link";
 
 export type itemDetails = {
+  id: string;
   image: string;
   name: string;
   store: string;
@@ -8,6 +10,8 @@ export type itemDetails = {
   price: number;
   star: number;
   sold: number;
+  className?: string;
+  placeholder?: boolean;
 };
 
 function formatSold(sold: number): string {
@@ -35,13 +39,13 @@ function formatSold(sold: number): string {
 
 export function Item(props: itemDetails) {
   return (
-    <div className="flex flex-col w-[16vw] justify-center gap-3">
+    <div className="flex flex-col w-[16vw] justify-center gap-1">
       <div className="flex justify-center items-center aspect-square rounded-3xl overflow-hidden">
-        <Link className="size-full" href={""}>
+        <Link className="size-full" href={baseURL + "/products/" + props.id}>
           <img className="size-full" src={props.image} alt={props.name} />
         </Link>
       </div>
-      <div className="flex justify-between px-3">
+      <div className="flex justify-between px-3 pb-3">
         <div className="flex flex-col gap-4 w-full">
           <div className="flex flex-col -space-y-0.5">
             <p className="text-white-1 text-lg">{props.name}</p>

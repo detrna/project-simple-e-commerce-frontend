@@ -25,11 +25,15 @@ function filter(name: string): ReactNode {
 
 function sidebarBox(name: string, components: ReactNode): ReactNode {
   return (
-    <div className="flex flex-col gap-3 px-4 py-8 bg-black-4 outline-1 outline-[#373737] rounded-2xl">
+    <div className="flex flex-col gap-3 px-4 py-4 bg-black-4 outline-1 outline-[#373737] rounded-2xl">
       <div>
         <p className="text-white-3 font-semibold text-sm">{name}</p>
       </div>
-      <div className="flex flex-col gap-6">{components}</div>
+      <div className="flex flex-col gap-4">
+        {components}
+        {components}
+        {components}
+      </div>
     </div>
   );
 }
