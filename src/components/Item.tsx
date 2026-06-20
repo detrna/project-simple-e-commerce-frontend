@@ -37,7 +37,14 @@ function formatSold(sold: number): string {
   return text;
 }
 
+function truncateText(text: string, maxLength: number): string {
+  if (text.length <= maxLength) return text;
+  return text.slice(0, maxLength - 3).trimEnd() + "...";
+}
+
 export function Item(props: itemDetails) {
+  const displayName = truncateText(props.name, 18);
+
   return (
     <div className="flex w-[16vw] flex-col justify-center gap-1">
       <div className="flex aspect-square items-center justify-center overflow-hidden rounded-3xl">
@@ -47,8 +54,10 @@ export function Item(props: itemDetails) {
       </div>
       <div className="flex justify-between px-3 pb-3">
         <div className="flex w-full flex-col gap-4">
-          <div className="flex flex-col -space-y-0.5">
-            <p className="text-white-1 text-lg">{props.name}</p>
+          <div className="flex flex-col flex-wrap -space-y-0.5">
+            <p className="text-white-1 text-md" title={props.name}>
+              {displayName}
+            </p>
             <p className="text-white-2 text-xs whitespace-nowrap">
               {props.store} • {props.address}
             </p>
