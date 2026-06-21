@@ -40,6 +40,12 @@ export default function Home() {
         `/products?limit=8&cursor=${cursor}&${params}`,
       );
 
+      if (res.data.length === 0) {
+        hasMore = false;
+        console.log("there is no data yet");
+        return;
+      }
+
       hasMore = res.meta.pagination!.hasMore ? true : false;
       cursor = res.meta.pagination!.cursor ?? "";
       setProducts((prev) => [...prev, ...res.data]);
@@ -72,7 +78,7 @@ export default function Home() {
   }, [isFiltering]);
 
   const filter = (filter: Filter): void => {
-    if (filters.category === filter.category) {
+    if (filters.category === filter.category && filter.category !== undefined) {
       const { category, ...rest } = filters;
 
       params = new URLSearchParams({
@@ -96,7 +102,6 @@ export default function Home() {
       setIsFiltering(true);
 
       cursor = "";
-
       hasMore = true;
     }
 

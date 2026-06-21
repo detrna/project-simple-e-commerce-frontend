@@ -1,7 +1,7 @@
-export type Category = {
+export interface Category {
   name: string;
-  subcategory: Subcategory[];
-};
+  subcategory?: Subcategory[];
+}
 
 export type Subcategory = {
   name: string;
