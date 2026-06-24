@@ -1,13 +1,13 @@
 "use client";
 
 import { Category } from "@/@types/Category";
-import { Filter } from "@/@types/Filters";
+import { ProductQueries } from "@/@types/ProductQueries";
 import React, { ReactNode, useRef, useState } from "react";
 
 export type SidebarProps = {
   categories: Category[];
   filters: string[];
-  filterFunction(filter: Filter): void;
+  filterFunction(filter: ProductQueries): void;
 };
 
 type FilterObject = {
@@ -45,7 +45,7 @@ function PriceSlider({
 }: {
   priceMinInput: React.RefObject<HTMLInputElement>;
   priceMaxInput: React.RefObject<HTMLInputElement>;
-  filterFunction(filter: Filter): void;
+  filterFunction(filter: ProductQueries): void;
 }): ReactNode {
   return (
     <div className="flex flex-col items-center gap-4">
@@ -93,10 +93,38 @@ function PriceSlider({
   );
 }
 
+function LocationList({
+  locationsInput,
+  filterFunction,
+}: {
+  locationsInput: React.RefObject<HTMLInputElement>;
+
+  filterFunction(filter: ProductQueries): void;
+}): ReactNode {
+  return (
+    <div className="flex">
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          filterFunction({
+            locations: [locationsInput.current.value],
+          });
+        }}
+      >
+        <input
+          className="bg-black-2 text-white-1 h-[6vh] w-full rounded-md px-4 outline-none"
+          placeholder="Cities . . ."
+        />
+      </form>
+    </div>
+  );
+}
+
 export function Sidebar(props: SidebarProps) {
   const [filterss, setFilters] = useState<FilterObject>(filtered);
   const priceMinInput = useRef<HTMLInputElement>(null);
   const priceMaxInput = useRef<HTMLInputElement>(null);
+  const locationInput = useRef<HTMLInputElement>(null);
 
   function categoryContainer(categories: Category[]): ReactNode {
     const category = categories.map((c) => (
@@ -175,21 +203,15 @@ export function Sidebar(props: SidebarProps) {
         );
         break;
       case "location":
-        element = <LocationList />;
+        element = (
+          <LocationList
+            locationsInput={locationInput as any}
+            filterFunction={props.filterFunction}
+          />
+        );
         break;
     }
     return element;
-  }
-
-  function LocationList(): ReactNode {
-    return (
-      <div className="flex">
-        <input
-          className="bg-black-2 text-white-1 h-[6vh] w-full rounded-md px-4 outline-none"
-          placeholder="Cities . . ."
-        />
-      </div>
-    );
   }
 
   function sidebarContainer(name: string, components: ReactNode): ReactNode {
@@ -208,10 +230,12 @@ export function Sidebar(props: SidebarProps) {
   }
 
   return (
-    <div className="flex h-full w-[20vw] flex-col gap-4">
-      <button onClick={() => log()}>LOGGG</button>
-      {sidebarContainer("CATEOGRY", categoryContainer(props.categories))}
-      {sidebarContainer("FILTERS", priceExpanded(filterss))}
+    <div className="h-fullcreen fixed w-64">
+      <div className="flex h-full w-[20vw] flex-col gap-4">
+        <button onClick={() => log()}>LOGGG</button>
+        {sidebarContainer("CATEOGRY", categoryContainer(props.categories))}
+        {sidebarContainer("FILTERS", priceExpanded(filterss))}
+      </div>
     </div>
   );
 }

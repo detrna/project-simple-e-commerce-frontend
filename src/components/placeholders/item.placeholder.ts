@@ -1,4 +1,4 @@
-import { itemDetails } from "../Item";
+import { itemDetails } from "../root/Item";
 
 export const itemPlaceholder: itemDetails = {
   id: "id",

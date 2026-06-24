@@ -1,4 +1,4 @@
-import { apiURL } from "@/@types/Constants";
+import { apiURL } from "@/@types/EnvConstants";
 import axios from "axios";
 
 const api = axios.create({

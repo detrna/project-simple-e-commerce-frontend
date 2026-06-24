@@ -1,4 +1,4 @@
-import { baseURL } from "@/@types/Constants";
+import { baseURL } from "@/@types/EnvConstants";
 import Link from "next/link";
 
 export type itemDetails = {
