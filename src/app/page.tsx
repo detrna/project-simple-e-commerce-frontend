@@ -3,7 +3,6 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 
-import { Sidebar } from "@/components/public/sidebar/Sidebar";
 import { ScrollObserver } from "@/components/public/ScrollObserver";
 import { BtnSort } from "@/components/root/BtnSort";
 import ProductsList from "@/components/root/ProductsList";
@@ -16,6 +15,7 @@ import useProduct from "@/hooks/root/useProduct";
 import useParseSearchQuery from "@/hooks/root/useParseSearchQuery";
 import useObserver from "@/hooks/root/useObserver";
 import { useCategories } from "@/hooks/root/useCategories";
+import { Sidebar } from "@/components/root/Sidebar";
 
 export default function Home() {
   const router = useRouter();
@@ -68,8 +68,8 @@ export default function Home() {
     <div className="flex gap-8 p-8">
       <Sidebar
         categories={categories}
-        filters={["Price, Rating, Locations"]}
-        filterFunction={filter}
+        filters={["Price", "Rating", "Locations"]}
+        execute={filter}
       />
       <div className="ml-[22vw] flex flex-1 flex-col gap-4">
         <BtnSort log={() => {}} />
