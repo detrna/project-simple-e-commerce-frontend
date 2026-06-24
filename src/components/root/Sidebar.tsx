@@ -9,21 +9,19 @@ import FilterContainer from "./sidebar/FilterContainer";
 export type SidebarProps = {
   categories: Category[];
   filters: string[];
-  execute(filter: ProductQueries): void;
 };
 
-export function Sidebar({ execute, categories, filters }: SidebarProps) {
+export function Sidebar({ categories, filters }: SidebarProps) {
   return (
     <div className="h-fullcreen fixed w-64">
       <div className="flex h-full w-[20vw] flex-col gap-4">
-        <button onClick={() => {}}>LOGGG</button>
         <SidebarContainer
           header="CATEGORIES"
-          component={CategoryContainer({ categories, execute })}
+          component={CategoryContainer({ categories })}
         />
         <SidebarContainer
           header="FITLERS"
-          component={FilterContainer({ filters, execute })}
+          component={FilterContainer({ filters })}
         />
       </div>
     </div>

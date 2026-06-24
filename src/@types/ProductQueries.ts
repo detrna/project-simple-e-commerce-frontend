@@ -4,5 +4,5 @@ export interface ProductQueries {
   category?: string;
   priceMin?: number;
   priceMax?: number;
-  locations?: string[];
+  locations?: string[] | string;
 }

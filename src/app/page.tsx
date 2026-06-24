@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { createContext, useContext, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 import { ScrollObserver } from "@/components/public/ScrollObserver";
@@ -17,29 +17,33 @@ import useObserver from "@/hooks/root/useObserver";
 import { useCategories } from "@/hooks/root/useCategories";
 import { Sidebar } from "@/components/root/Sidebar";
 
+export type FilterContextTypes = {
+  filterTrigger: (filter: ProductQueries) => void;
+  currentQuery: ProductQueries;
+};
+export const FilterContext = createContext<FilterContextTypes | null>(null);
+
 export default function Home() {
   const router = useRouter();
 
-  const { searchParams, currentQuery } = useParseSearchQuery();
-  const { observerTarget, scroll } = useObserver({
-    dependencies: [searchParams],
-  });
+  const { searchParams, currentQuery } = useParseSearchQuery<ProductQueries>();
+  const { observerTarget, scrollTrigger } = useObserver({});
   const { products, productsLoading, hasMore } = useProduct({
-    dependencies: [scroll.current],
+    dependencies: [scrollTrigger],
     searchParams,
     currentQuery,
   });
   const { categories, categoriesLoading } = useCategories();
 
   // Filter
-  const checkCategory = (newQuery: any): boolean => {
+  const checkDoubleCategory = (newQuery: ProductQueries): boolean => {
     return (
       currentQuery.category === newQuery.category &&
       newQuery.category !== undefined
     );
   };
 
-  const removeCategory = (router: any, currentQuery: any) => {
+  const removeCategory = () => {
     const { category, ...rest } = currentQuery;
     const newSearchQuery = objectToSearchQuery(rest);
 
@@ -47,14 +51,72 @@ export default function Home() {
       router.push("/");
       return;
     }
+
     router.push(`?${newSearchQuery}`);
   };
 
+  const removeLocations = () => {
+    const { locations, ...rest } = currentQuery;
+    const newSearchParams = objectToSearchQuery(rest);
+    router.push(`?${newSearchParams}`);
+  };
+
+  const addLocations = (
+    currentLocations: string[],
+    newQuery: ProductQueries,
+  ) => {
+    const query: ProductQueries = {
+      ...currentQuery,
+      locations: [...currentLocations!, newQuery.locations as string],
+    };
+
+    const newSearchParams = objectToSearchQuery(query);
+    router.push(`?${newSearchParams}`);
+  };
+
+  const handleLocations = (newQuery: ProductQueries): boolean => {
+    if (!newQuery.locations || !currentQuery.locations) return false;
+
+    const newLocation: string = newQuery.locations as string;
+    const currentLocations = currentQuery.locations;
+    const currentLocationsArray = Array.isArray(currentLocations)
+      ? currentLocations
+      : [currentLocations];
+
+    const filteredQuery: ProductQueries = {
+      ...currentQuery,
+      locations: currentLocationsArray.filter((l) => l !== newLocation),
+    };
+
+    if (filteredQuery.locations?.length === 0) {
+      removeLocations();
+      return true;
+    }
+
+    const newLocationAdded =
+      JSON.stringify(filteredQuery.locations) ===
+      JSON.stringify(currentLocationsArray);
+
+    if (newLocationAdded) {
+      addLocations(currentLocationsArray, newQuery);
+      return true;
+    }
+
+    const newSearchQuery = objectToSearchQuery(filteredQuery);
+    router.push(`?${newSearchQuery}`);
+
+    return true;
+  };
+
   const filter = (newQuery: ProductQueries): void => {
-    if (checkCategory(newQuery)) {
-      removeCategory(router, currentQuery);
+    console.log(newQuery);
+
+    if (checkDoubleCategory(newQuery)) {
+      removeCategory();
       return;
     }
+
+    if (handleLocations(newQuery)) return;
 
     const newSearchQuery = objectToSearchQuery({
       ...currentQuery,
@@ -66,13 +128,18 @@ export default function Home() {
 
   return (
     <div className="flex gap-8 p-8">
-      <Sidebar
-        categories={categories}
-        filters={["Price", "Rating", "Locations"]}
-        execute={filter}
-      />
+      <FilterContext.Provider value={{ filterTrigger: filter, currentQuery }}>
+        <Sidebar
+          categories={categories}
+          filters={["Price", "Rating", "Locations"]}
+        />
+      </FilterContext.Provider>
       <div className="ml-[22vw] flex flex-1 flex-col gap-4">
-        <BtnSort log={() => {}} />
+        <BtnSort
+          log={() => {
+            console.log(scrollTrigger);
+          }}
+        />
 
         <div className="mt-16 flex w-full flex-wrap justify-between gap-y-8">
           <ProductsList products={products} />

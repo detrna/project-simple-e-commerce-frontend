@@ -1,14 +1,21 @@
 import { Category } from "@/@types/Category";
 import { ProductQueries } from "@/@types/ProductQueries";
-import { ReactNode } from "react";
+import { FilterContext } from "@/app/page";
+import { ReactNode, useContext } from "react";
 
 export default function CategoryContainer({
   categories,
-  execute,
 }: {
   categories: Category[];
-  execute(category: ProductQueries): void;
 }): ReactNode {
+  const context = useContext(FilterContext);
+
+  if (!context) {
+    throw new Error("FilterContext not found");
+  }
+
+  const execute = context.filterTrigger;
+
   return categories.map((c) => (
     <div
       className="flex cursor-pointer items-center gap-3"

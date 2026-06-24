@@ -1,32 +1,24 @@
-import { ReactNode, useState } from "react";
+import { ReactNode, useContext, useState } from "react";
 import LocationInput from "./LocationInput";
 import { PriceInput } from "./PriceInput";
 import { ProductQueries } from "@/@types/ProductQueries";
 
-function showExpanded(
-  key: string,
-  execute: (filter: ProductQueries) => void,
-): ReactNode {
+function showExpanded(key: string): ReactNode {
   let element: ReactNode = <></>;
   switch (key.toLowerCase()) {
     case "price":
-      element = <PriceInput execute={execute} />;
+      element = <PriceInput />;
       break;
     case "locations":
-      element = <LocationInput execute={execute} />;
+      element = <LocationInput />;
       break;
   }
   return element;
 }
 
-export default function FilterBox({
-  text,
-  execute,
-}: {
-  text: string;
-  execute: (filter: ProductQueries) => void;
-}): ReactNode {
+export default function FilterBox({ text }: { text: string }): ReactNode {
   const [expanded, setExpanded] = useState<boolean>(false);
+
   return (
     <>
       <div
@@ -48,7 +40,7 @@ export default function FilterBox({
       </div>
       {expanded && (
         <div className="bg-black-3 z-0 rounded-br-xl rounded-bl-xl p-4 outline-1 outline-[#373737]">
-          {showExpanded(text, execute)}
+          {showExpanded(text)}
         </div>
       )}
     </>

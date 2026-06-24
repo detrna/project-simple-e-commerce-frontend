@@ -5,7 +5,7 @@ export function Navbar() {
     <div className="bg-black-1 flex h-[7.5vh] items-center gap-12 px-4">
       <div className="flex w-[14vw] justify-center">
         <Link href={"/"}>
-          <h1 className="text-white-1 cursor-pointer text-[1.2rem] font-normal">
+          <h1 className="text-white-1 cursor-pointer text-[1.2rem] font-normal whitespace-nowrap">
             Simple E-Commerce
           </h1>
         </Link>

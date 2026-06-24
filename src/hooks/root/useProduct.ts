@@ -1,17 +1,18 @@
 import { Product } from "@/@types/Product";
+import { ProductQueries } from "@/@types/ProductQueries";
 import { ResponseSchema } from "@/@types/Response";
 import api from "@/lib/api";
 import { objectToSearchQuery } from "@/lib/objectToSearchQuery";
 import { useEffect, useRef, useState } from "react";
 
 export default function useProduct({
-  dependencies,
   currentQuery,
   searchParams,
+  dependencies,
 }: {
-  dependencies: any;
-  currentQuery: object;
+  currentQuery: ProductQueries;
   searchParams: URLSearchParams;
+  dependencies: any;
 }) {
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -52,6 +53,7 @@ export default function useProduct({
     cursor.current = "";
     hasMore.current = true;
     setProducts([]);
+    fetchProducts();
   };
 
   useEffect(() => {
@@ -60,11 +62,7 @@ export default function useProduct({
 
   useEffect(() => {
     fetchProducts();
-  }, [resetProductsList]);
-
-  useEffect(() => {
-    fetchProducts();
   }, dependencies);
 
-  return { products, productsLoading: isLoading, hasMore };
+  return { products, productsLoading: isLoading, hasMore, fetchProducts };
 }
