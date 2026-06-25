@@ -7,17 +7,17 @@ import { ReactNode, useRef } from "react";
 
 function AddedLocation({
   text,
-  execute,
+  removeLocation,
 }: {
   text: string;
-  execute: (location: string) => void;
+  removeLocation: (location: string) => void;
 }): ReactNode {
   return (
     <div className="flex flex-col items-center gap-8">
       <div className="bg-black-5 text-white-2 text-md flex w-full items-center justify-between rounded-md px-4 py-2 font-medium">
         <p>{text}</p>
         <p
-          onClick={() => execute(text)}
+          onClick={() => removeLocation(text)}
           className="scale-x-[1.3] cursor-pointer text-xs font-semibold"
         >
           X
@@ -48,14 +48,14 @@ export default function LocationInput(): ReactNode {
     });
   };
 
-  function removeLocation(location: string) {
+  const removeLocation = (location: string): void => {
     const filteredLocations = locationsArray.filter((l) => l !== location);
 
     if (filteredLocations.length === 0)
       return removeQuery({
         router,
         currentQuery,
-        key: "location",
+        key: "locations",
       });
 
     pushNewQuery({
@@ -63,7 +63,7 @@ export default function LocationInput(): ReactNode {
       currentQuery,
       newQuery: { locations: filteredLocations },
     });
-  }
+  };
 
   return (
     <div className="flex flex-col gap-4">
@@ -88,7 +88,7 @@ export default function LocationInput(): ReactNode {
             <AddedLocation
               key={i}
               text={location!}
-              execute={removeLocation}
+              removeLocation={removeLocation}
             ></AddedLocation>
           );
         })}

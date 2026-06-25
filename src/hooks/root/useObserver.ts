@@ -1,7 +1,7 @@
 import { observeScroll } from "@/lib/observeScroll";
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
-export default function useObserver({ dependencies }: { dependencies?: any }) {
+export default function useObserver(dependencies: React.DependencyList = []) {
   const observerTarget = useRef<HTMLDivElement>(null);
 
   const [scrollTrigger, setScrollTrigger] = useState<number>(Date.now());

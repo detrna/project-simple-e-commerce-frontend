@@ -4,7 +4,7 @@ import useParseSearchQuery from "@/hooks/root/useParseSearchQuery";
 import { pushNewQuery } from "@/lib/router/pushNewQuery";
 import { removeQuery } from "@/lib/router/removeQuery";
 import { useRouter } from "next/navigation";
-import { ReactNode, useContext } from "react";
+import { ReactNode } from "react";
 
 export default function CategoryContainer({
   categories,
@@ -16,9 +16,13 @@ export default function CategoryContainer({
 
   const addCategory = (newQuery: ProductQueries): void => {
     if (currentQuery.category === newQuery.category)
-      return removeQuery({ router, currentQuery, key: "category" });
+      return removeQuery<ProductQueries>({
+        router,
+        currentQuery,
+        key: "category",
+      });
 
-    pushNewQuery({ router, currentQuery, newQuery });
+    pushNewQuery<ProductQueries>({ router, currentQuery, newQuery });
   };
 
   return categories.map((c) => (

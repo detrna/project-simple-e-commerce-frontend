@@ -1,5 +1,7 @@
-export function queryURLToObject(queryURL: URLSearchParams): any {
-  const params: Record<string, string[] | string> = {};
+export function queryURLToObject<T extends Record<string, string | string[]>>(
+  queryURL: URLSearchParams,
+): T {
+  const params: Record<string, string | string[]> = {};
 
   for (const key of queryURL.keys()) {
     const keys = queryURL.getAll(key);
@@ -7,5 +9,5 @@ export function queryURLToObject(queryURL: URLSearchParams): any {
     params[key] = filteredKeys;
   }
 
-  return params;
+  return params as T;
 }

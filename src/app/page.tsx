@@ -6,21 +6,15 @@ import { ScrollObserver } from "@/components/public/ScrollObserver";
 import { BtnSort } from "@/components/root/BtnSort";
 import ProductsList from "@/components/root/ProductsList";
 
-import { ProductQueries } from "@/@types/ProductQueries";
-
 import useProduct from "@/hooks/root/useProduct";
-import useParseSearchQuery from "@/hooks/root/useParseSearchQuery";
 import useObserver from "@/hooks/root/useObserver";
 import { useCategories } from "@/hooks/root/useCategories";
 import { Sidebar } from "@/components/root/Sidebar";
 
 export default function Home() {
-  const { searchParams, currentQuery } = useParseSearchQuery<ProductQueries>();
-  const { observerTarget, scrollTrigger } = useObserver({});
+  const { observerTarget, scrollTrigger } = useObserver();
   const { products, productsLoading, hasMore } = useProduct({
     dependencies: [scrollTrigger],
-    searchParams,
-    currentQuery,
   });
   const { categories, categoriesLoading } = useCategories();
 
@@ -51,3 +45,6 @@ export default function Home() {
     </div>
   );
 }
+
+// To do:
+// Error Handling

@@ -3,22 +3,21 @@ import { ProductQueries } from "@/@types/ProductQueries";
 import { ResponseSchema } from "@/@types/Response";
 import api from "@/lib/api";
 import { objectToSearchQuery } from "@/lib/router/objectToSearchQuery";
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import useParseSearchQuery from "./useParseSearchQuery";
 
 export default function useProduct({
-  currentQuery,
-  searchParams,
   dependencies,
 }: {
-  currentQuery: ProductQueries;
-  searchParams: URLSearchParams;
-  dependencies: any;
+  dependencies: React.DependencyList;
 }) {
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const isFetching = useRef<boolean>(false);
   const cursor = useRef<string>("");
   const hasMore = useRef<boolean>(true);
+
+  const { searchParams, currentQuery } = useParseSearchQuery<ProductQueries>();
 
   const fetchProducts = async (): Promise<void> => {
     if (!hasMore.current || isFetching.current) return;
