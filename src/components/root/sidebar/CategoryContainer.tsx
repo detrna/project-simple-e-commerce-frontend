@@ -1,6 +1,6 @@
 import { Category } from "@/@types/Category";
 import { ProductQueries } from "@/@types/ProductQueries";
-import { FilterContext } from "@/app/page";
+import useParseSearchQuery from "@/hooks/root/useParseSearchQuery";
 import { pushNewQuery } from "@/lib/router/pushNewQuery";
 import { removeQuery } from "@/lib/router/removeQuery";
 import { useRouter } from "next/navigation";
@@ -12,11 +12,7 @@ export default function CategoryContainer({
   categories: Category[];
 }): ReactNode {
   const router = useRouter();
-  const context = useContext(FilterContext);
-
-  if (!context) throw new Error("FilterContext not found");
-
-  const { currentQuery } = context;
+  const { currentQuery } = useParseSearchQuery<ProductQueries>();
 
   const addCategory = (newQuery: ProductQueries): void => {
     if (currentQuery.category === newQuery.category)

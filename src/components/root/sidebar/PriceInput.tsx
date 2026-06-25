@@ -1,4 +1,5 @@
-import { FilterContext } from "@/app/page";
+import { ProductQueries } from "@/@types/ProductQueries";
+import useParseSearchQuery from "@/hooks/root/useParseSearchQuery";
 import { pushNewQuery } from "@/lib/router/pushNewQuery";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { useRouter } from "next/navigation";
@@ -15,9 +16,7 @@ function InputTextField({
 }): ReactNode {
   const input = useRef<HTMLInputElement>(null);
 
-  const context = useContext(FilterContext);
-
-  if (!context) throw new Error("FilterContext not found");
+  const { currentQuery } = useParseSearchQuery<ProductQueries>();
 
   return (
     <div className="flex items-center gap-8">
@@ -29,7 +28,7 @@ function InputTextField({
           e.preventDefault();
           pushNewQuery({
             router,
-            currentQuery: context.currentQuery,
+            currentQuery,
             newQuery: Object.fromEntries([[objectKey, input.current?.value]]),
           });
         }}

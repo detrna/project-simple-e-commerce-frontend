@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext } from "react";
+import React from "react";
 
 import { ScrollObserver } from "@/components/public/ScrollObserver";
 import { BtnSort } from "@/components/root/BtnSort";
@@ -14,11 +14,6 @@ import useObserver from "@/hooks/root/useObserver";
 import { useCategories } from "@/hooks/root/useCategories";
 import { Sidebar } from "@/components/root/Sidebar";
 
-export type FilterContextTypes = {
-  currentQuery: ProductQueries;
-};
-export const FilterContext = createContext<FilterContextTypes | null>(null);
-
 export default function Home() {
   const { searchParams, currentQuery } = useParseSearchQuery<ProductQueries>();
   const { observerTarget, scrollTrigger } = useObserver({});
@@ -31,12 +26,11 @@ export default function Home() {
 
   return (
     <div className="flex gap-8 p-8">
-      <FilterContext.Provider value={{ currentQuery }}>
-        <Sidebar
-          categories={categories}
-          filters={["Price", "Rating", "Locations"]}
-        />
-      </FilterContext.Provider>
+      <Sidebar
+        categories={categories}
+        filters={["Price", "Rating", "Locations"]}
+      />
+
       <div className="ml-[22vw] flex flex-1 flex-col gap-4">
         <BtnSort
           log={() => {

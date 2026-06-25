@@ -1,9 +1,9 @@
 import { ProductQueries } from "@/@types/ProductQueries";
-import { FilterContext } from "@/app/page";
+import useParseSearchQuery from "@/hooks/root/useParseSearchQuery";
 import { pushNewQuery } from "@/lib/router/pushNewQuery";
 import { removeQuery } from "@/lib/router/removeQuery";
 import { useRouter } from "next/navigation";
-import { ReactNode, useContext, useRef } from "react";
+import { ReactNode, useRef } from "react";
 
 function AddedLocation({
   text,
@@ -30,11 +30,10 @@ function AddedLocation({
 export default function LocationInput(): ReactNode {
   const router = useRouter();
   const locationsInput = useRef<HTMLInputElement>(null);
-  const context = useContext(FilterContext);
 
-  if (!context) throw new Error("FilterContext not found");
+  const { currentQuery } = useParseSearchQuery<ProductQueries>();
 
-  const locations = context.currentQuery.locations ?? [];
+  const locations = currentQuery.locations ?? [];
   const locationsArray = Array.isArray(locations) ? locations : [locations];
 
   const addLocation = (location: string): void => {
@@ -44,7 +43,7 @@ export default function LocationInput(): ReactNode {
 
     pushNewQuery({
       router,
-      currentQuery: context.currentQuery,
+      currentQuery,
       newQuery: { locations: newLocation },
     });
   };
@@ -55,13 +54,13 @@ export default function LocationInput(): ReactNode {
     if (filteredLocations.length === 0)
       return removeQuery({
         router,
-        currentQuery: context?.currentQuery,
+        currentQuery,
         key: "location",
       });
 
     pushNewQuery({
       router,
-      currentQuery: context?.currentQuery,
+      currentQuery,
       newQuery: { locations: filteredLocations },
     });
   }
