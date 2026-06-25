@@ -1,23 +1,23 @@
-import { ProductQueries } from "@/@types/ProductQueries";
 import { FilterContext } from "@/app/page";
-import React, { ReactNode, useContext, useRef } from "react";
+import { pushNewQuery } from "@/lib/router/pushNewQuery";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { useRouter } from "next/navigation";
+import { ReactNode, useContext, useRef } from "react";
 
 function InputTextField({
   text,
   objectKey,
+  router,
 }: {
   text: string;
   objectKey: string;
+  router: AppRouterInstance;
 }): ReactNode {
   const input = useRef<HTMLInputElement>(null);
 
   const context = useContext(FilterContext);
 
-  if (!context) {
-    throw new Error("FilterContext not found");
-  }
-
-  const execute = context.filterTrigger;
+  if (!context) throw new Error("FilterContext not found");
 
   return (
     <div className="flex items-center gap-8">
@@ -27,7 +27,11 @@ function InputTextField({
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          execute(Object.fromEntries([[objectKey, input.current!.value]]));
+          pushNewQuery({
+            router,
+            currentQuery: context.currentQuery,
+            newQuery: Object.fromEntries([[objectKey, input.current?.value]]),
+          });
         }}
       >
         <input
@@ -42,10 +46,12 @@ function InputTextField({
 }
 
 export function PriceInput(): ReactNode {
+  const router = useRouter();
+
   return (
     <div className="flex flex-col items-center gap-4">
-      <InputTextField objectKey="priceMin" text="From" />
-      <InputTextField objectKey="priceMax" text="To" />
+      <InputTextField objectKey="priceMin" text="From" router={router} />
+      <InputTextField objectKey="priceMax" text="To" router={router} />
     </div>
   );
 }

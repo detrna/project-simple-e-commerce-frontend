@@ -1,4 +1,4 @@
-import { queryURLToObject } from "@/lib/queryURLToObject";
+import { queryURLToObject } from "@/lib/router/queryURLToObject";
 import { useSearchParams } from "next/navigation";
 import { useMemo } from "react";
 

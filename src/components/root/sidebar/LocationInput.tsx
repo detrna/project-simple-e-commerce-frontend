@@ -1,5 +1,8 @@
 import { ProductQueries } from "@/@types/ProductQueries";
 import { FilterContext } from "@/app/page";
+import { pushNewQuery } from "@/lib/router/pushNewQuery";
+import { removeQuery } from "@/lib/router/removeQuery";
+import { useRouter } from "next/navigation";
 import { ReactNode, useContext, useRef } from "react";
 
 function AddedLocation({
@@ -7,14 +10,14 @@ function AddedLocation({
   execute,
 }: {
   text: string;
-  execute: (newQuery: ProductQueries) => void;
+  execute: (location: string) => void;
 }): ReactNode {
   return (
     <div className="flex flex-col items-center gap-8">
       <div className="bg-black-5 text-white-2 text-md flex w-full items-center justify-between rounded-md px-4 py-2 font-medium">
         <p>{text}</p>
         <p
-          onClick={() => execute({ locations: text })}
+          onClick={() => execute(text)}
           className="scale-x-[1.3] cursor-pointer text-xs font-semibold"
         >
           X
@@ -25,17 +28,43 @@ function AddedLocation({
 }
 
 export default function LocationInput(): ReactNode {
+  const router = useRouter();
   const locationsInput = useRef<HTMLInputElement>(null);
-
   const context = useContext(FilterContext);
 
-  if (!context) {
-    throw new Error("FilterContext not found");
-  }
+  if (!context) throw new Error("FilterContext not found");
 
-  const locations = context.currentQuery.locations;
+  const locations = context.currentQuery.locations ?? [];
   const locationsArray = Array.isArray(locations) ? locations : [locations];
-  const execute = context.filterTrigger;
+
+  const addLocation = (location: string): void => {
+    if (locationsArray.some((l) => l === location)) return;
+
+    const newLocation = [...locationsArray, location];
+
+    pushNewQuery({
+      router,
+      currentQuery: context.currentQuery,
+      newQuery: { locations: newLocation },
+    });
+  };
+
+  function removeLocation(location: string) {
+    const filteredLocations = locationsArray.filter((l) => l !== location);
+
+    if (filteredLocations.length === 0)
+      return removeQuery({
+        router,
+        currentQuery: context?.currentQuery,
+        key: "location",
+      });
+
+    pushNewQuery({
+      router,
+      currentQuery: context?.currentQuery,
+      newQuery: { locations: filteredLocations },
+    });
+  }
 
   return (
     <div className="flex flex-col gap-4">
@@ -43,9 +72,7 @@ export default function LocationInput(): ReactNode {
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            execute({
-              locations: locationsInput.current!.value,
-            });
+            addLocation(locationsInput.current!.value);
           }}
         >
           <input
@@ -62,7 +89,7 @@ export default function LocationInput(): ReactNode {
             <AddedLocation
               key={i}
               text={location!}
-              execute={execute}
+              execute={removeLocation}
             ></AddedLocation>
           );
         })}

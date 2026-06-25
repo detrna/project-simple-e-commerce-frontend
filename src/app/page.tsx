@@ -1,13 +1,10 @@
 "use client";
 
-import React, { createContext, useContext, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import React, { createContext } from "react";
 
 import { ScrollObserver } from "@/components/public/ScrollObserver";
 import { BtnSort } from "@/components/root/BtnSort";
 import ProductsList from "@/components/root/ProductsList";
-
-import { objectToSearchQuery } from "@/lib/objectToSearchQuery";
 
 import { ProductQueries } from "@/@types/ProductQueries";
 
@@ -18,14 +15,11 @@ import { useCategories } from "@/hooks/root/useCategories";
 import { Sidebar } from "@/components/root/Sidebar";
 
 export type FilterContextTypes = {
-  filterTrigger: (filter: ProductQueries) => void;
   currentQuery: ProductQueries;
 };
 export const FilterContext = createContext<FilterContextTypes | null>(null);
 
 export default function Home() {
-  const router = useRouter();
-
   const { searchParams, currentQuery } = useParseSearchQuery<ProductQueries>();
   const { observerTarget, scrollTrigger } = useObserver({});
   const { products, productsLoading, hasMore } = useProduct({
@@ -35,100 +29,9 @@ export default function Home() {
   });
   const { categories, categoriesLoading } = useCategories();
 
-  // Filter
-  const checkDoubleCategory = (newQuery: ProductQueries): boolean => {
-    return (
-      currentQuery.category === newQuery.category &&
-      newQuery.category !== undefined
-    );
-  };
-
-  const removeCategory = () => {
-    const { category, ...rest } = currentQuery;
-    const newSearchQuery = objectToSearchQuery(rest);
-
-    if (Object.keys(rest).length === 0) {
-      router.push("/");
-      return;
-    }
-
-    router.push(`?${newSearchQuery}`);
-  };
-
-  const removeLocations = () => {
-    const { locations, ...rest } = currentQuery;
-    const newSearchParams = objectToSearchQuery(rest);
-    router.push(`?${newSearchParams}`);
-  };
-
-  const addLocations = (
-    currentLocations: string[],
-    newQuery: ProductQueries,
-  ) => {
-    const query: ProductQueries = {
-      ...currentQuery,
-      locations: [...currentLocations!, newQuery.locations as string],
-    };
-
-    const newSearchParams = objectToSearchQuery(query);
-    router.push(`?${newSearchParams}`);
-  };
-
-  const handleLocations = (newQuery: ProductQueries): boolean => {
-    if (!newQuery.locations || !currentQuery.locations) return false;
-
-    const newLocation: string = newQuery.locations as string;
-    const currentLocations = currentQuery.locations;
-    const currentLocationsArray = Array.isArray(currentLocations)
-      ? currentLocations
-      : [currentLocations];
-
-    const filteredQuery: ProductQueries = {
-      ...currentQuery,
-      locations: currentLocationsArray.filter((l) => l !== newLocation),
-    };
-
-    if (filteredQuery.locations?.length === 0) {
-      removeLocations();
-      return true;
-    }
-
-    const newLocationAdded =
-      JSON.stringify(filteredQuery.locations) ===
-      JSON.stringify(currentLocationsArray);
-
-    if (newLocationAdded) {
-      addLocations(currentLocationsArray, newQuery);
-      return true;
-    }
-
-    const newSearchQuery = objectToSearchQuery(filteredQuery);
-    router.push(`?${newSearchQuery}`);
-
-    return true;
-  };
-
-  const filter = (newQuery: ProductQueries): void => {
-    console.log(newQuery);
-
-    if (checkDoubleCategory(newQuery)) {
-      removeCategory();
-      return;
-    }
-
-    if (handleLocations(newQuery)) return;
-
-    const newSearchQuery = objectToSearchQuery({
-      ...currentQuery,
-      ...newQuery,
-    });
-
-    router.push(`?${newSearchQuery}`);
-  };
-
   return (
     <div className="flex gap-8 p-8">
-      <FilterContext.Provider value={{ filterTrigger: filter, currentQuery }}>
+      <FilterContext.Provider value={{ currentQuery }}>
         <Sidebar
           categories={categories}
           filters={["Price", "Rating", "Locations"]}

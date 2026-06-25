@@ -1,5 +1,5 @@
 import { objectToMap } from "./objectToMap";
-import { ProductQueries } from "../@types/ProductQueries";
+import { ProductQueries } from "../../@types/ProductQueries";
 
 export function objectToSearchQuery(
   objectQuery: ProductQueries,

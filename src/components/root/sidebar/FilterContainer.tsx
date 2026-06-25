@@ -1,7 +1,6 @@
 import { ReactNode, useContext } from "react";
 import { ProductQueries } from "@/@types/ProductQueries";
 import FilterBox from "./FilterBox";
-import { FilterContext } from "@/app/page";
 
 export default function FilterContainer({
   filters,

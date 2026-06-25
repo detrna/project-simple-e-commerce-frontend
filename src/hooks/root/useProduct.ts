@@ -2,7 +2,7 @@ import { Product } from "@/@types/Product";
 import { ProductQueries } from "@/@types/ProductQueries";
 import { ResponseSchema } from "@/@types/Response";
 import api from "@/lib/api";
-import { objectToSearchQuery } from "@/lib/objectToSearchQuery";
+import { objectToSearchQuery } from "@/lib/router/objectToSearchQuery";
 import { useEffect, useRef, useState } from "react";
 
 export default function useProduct({
