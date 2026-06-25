@@ -3,7 +3,7 @@ import useParseSearchQuery from "@/hooks/root/useParseSearchQuery";
 import { pushNewQuery } from "@/lib/router/pushNewQuery";
 import { removeQuery } from "@/lib/router/removeQuery";
 import { useRouter } from "next/navigation";
-import { ReactNode, useRef } from "react";
+import { ReactNode, useMemo, useRef } from "react";
 
 function AddedLocation({
   text,
@@ -34,7 +34,10 @@ export default function LocationInput(): ReactNode {
   const { currentQuery } = useParseSearchQuery<ProductQueries>();
 
   const locations = currentQuery.locations ?? [];
-  const locationsArray = Array.isArray(locations) ? locations : [locations];
+  const locationsArray = useMemo(
+    () => (Array.isArray(locations) ? locations : [locations]),
+    [locations],
+  );
 
   const addLocation = (location: string): void => {
     if (locationsArray.some((l) => l === location)) return;

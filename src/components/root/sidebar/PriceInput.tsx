@@ -3,18 +3,16 @@ import useParseSearchQuery from "@/hooks/root/useParseSearchQuery";
 import { pushNewQuery } from "@/lib/router/pushNewQuery";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { useRouter } from "next/navigation";
-import { ReactNode, useRef } from "react";
+import { ReactNode, useCallback, useRef } from "react";
 
 function InputTextField({
   text,
   objectKey,
-  router,
-  currentQuery,
+  onSubmit,
 }: {
   text: string;
   objectKey: string;
-  router: AppRouterInstance;
-  currentQuery: ProductQueries;
+  onSubmit: (filter: ProductQueries) => void;
 }): ReactNode {
   const input = useRef<HTMLInputElement>(null);
 
@@ -26,11 +24,7 @@ function InputTextField({
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          pushNewQuery<ProductQueries>({
-            router,
-            currentQuery,
-            newQuery: Object.fromEntries([[objectKey, input.current?.value]]),
-          });
+          onSubmit(Object.fromEntries([[objectKey, input.current?.value]]));
         }}
       >
         <input
@@ -49,19 +43,28 @@ export function PriceInput(): ReactNode {
 
   const { currentQuery } = useParseSearchQuery<ProductQueries>();
 
+  const handlePriceChange = useCallback(
+    (newQuery: ProductQueries) => {
+      pushNewQuery<ProductQueries>({
+        router,
+        currentQuery,
+        newQuery,
+      });
+    },
+    [router, currentQuery],
+  );
+
   return (
     <div className="flex flex-col items-center gap-4">
       <InputTextField
         objectKey="priceMin"
         text="From"
-        router={router}
-        currentQuery={currentQuery}
+        onSubmit={handlePriceChange}
       />
       <InputTextField
         objectKey="priceMax"
         text="To"
-        router={router}
-        currentQuery={currentQuery}
+        onSubmit={handlePriceChange}
       />
     </div>
   );
