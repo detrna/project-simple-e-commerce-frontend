@@ -1,12 +1,13 @@
 import { Category } from "@/@types/Category";
 import { ProductQueries } from "@/@types/ProductQueries";
-import useParseSearchQuery from "@/hooks/root/useParseSearchQuery";
+import { useParseSearchQuery } from "@/hooks/root/useParseSearchQuery";
 import { pushNewQuery } from "@/lib/router/pushNewQuery";
 import { removeQuery } from "@/lib/router/removeQuery";
+import { motion } from "motion/react";
 import { useRouter } from "next/navigation";
 import { ReactNode } from "react";
 
-export default function CategoryContainer({
+export function CategoryContainer({
   categories,
 }: {
   categories: Category[];
@@ -26,8 +27,9 @@ export default function CategoryContainer({
   };
 
   return categories.map((c) => (
-    <div
-      className="flex cursor-pointer items-center gap-3"
+    <motion.div
+      whileHover={{ backgroundColor: "var(--color-black-4)" }}
+      className="flex cursor-pointer items-center gap-2 rounded-lg p-1"
       key={c.name}
       onClick={() => {
         addCategory({ category: c.name.toUpperCase() });
@@ -35,6 +37,6 @@ export default function CategoryContainer({
     >
       <img className="size-5" src="/globe.svg"></img>
       <p className="text-white-2 text-md">{c.name}</p>
-    </div>
+    </motion.div>
   ));
 }

@@ -1,6 +1,7 @@
+import { motion } from "motion/react";
 import { ReactNode } from "react";
 
-export default function SidebarContainer({
+export function SidebarContainer({
   header,
   component,
 }: {
@@ -8,11 +9,14 @@ export default function SidebarContainer({
   component: ReactNode;
 }): ReactNode {
   return (
-    <div className="bg-black-4 flex flex-col gap-3 rounded-2xl px-4 py-4 outline-1 outline-[#373737]">
-      <div>
+    <motion.div
+      layout="position"
+      className="bg-black-2 border-black-5 flex flex-col gap-3 rounded-lg border px-4 py-4"
+    >
+      <motion.div layout="position">
         <p className="text-white-3 text-sm font-semibold">{header}</p>
-      </div>
+      </motion.div>
       <div className="flex flex-col gap-4">{component}</div>
-    </div>
+    </motion.div>
   );
 }

@@ -4,9 +4,9 @@ import { ResponseSchema } from "@/@types/Response";
 import api from "@/lib/api";
 import { objectToSearchQuery } from "@/lib/router/objectToSearchQuery";
 import React, { useEffect, useRef, useState } from "react";
-import useParseSearchQuery from "./useParseSearchQuery";
+import { useParseSearchQuery } from "./useParseSearchQuery";
 
-export default function useProduct({
+export function useProduct({
   dependencies,
 }: {
   dependencies: React.DependencyList;

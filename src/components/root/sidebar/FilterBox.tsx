@@ -1,7 +1,7 @@
-import { ReactNode, useContext, useState } from "react";
-import LocationInput from "./LocationInput";
+import { ReactNode, useState } from "react";
+import { LocationInput } from "./LocationInput";
 import { PriceInput } from "./PriceInput";
-import { ProductQueries } from "@/@types/ProductQueries";
+import { AnimatePresence, motion } from "motion/react";
 
 function showExpanded(key: string): ReactNode {
   let element: ReactNode = <></>;
@@ -16,16 +16,22 @@ function showExpanded(key: string): ReactNode {
   return element;
 }
 
-export default function FilterBox({ text }: { text: string }): ReactNode {
+export function FilterBox({ text }: { text: string }): ReactNode {
   const [expanded, setExpanded] = useState<boolean>(false);
 
   return (
-    <>
-      <div
-        className={
-          `bg-black-5 z-10 flex cursor-pointer items-center justify-between p-2 outline-1 outline-[#373737] ` +
-          (expanded ? `rounded-tl-md rounded-tr-md` : `rounded-md`)
-        }
+    <motion.div
+      layout
+      transition={{ duration: 0.3, ease: "easeInOut" }}
+      className="overflow-hidden"
+    >
+      <motion.div
+        layout="position"
+        transition={{ duration: 0.3, ease: "easeInOut" }}
+        whileHover={{ backgroundColor: "var(--color-black-4)" }}
+        className={`bg-black-3 border-black-5 z-10 flex cursor-pointer items-center justify-between border p-2 pr-3 ${
+          expanded ? `rounded-tl-md rounded-tr-md` : `rounded-md`
+        }`}
         onClick={() => {
           setExpanded(expanded ? false : true);
         }}
@@ -34,15 +40,29 @@ export default function FilterBox({ text }: { text: string }): ReactNode {
           <img className="size-5" src="/globe.svg"></img>
           <p className="text-white-2 text-md">{text}</p>
         </div>
-        <div>
-          <p className="text-white-3 text-md font-medium">❯</p>
+        <div
+          className={`transition-all duration-200 ${
+            expanded ? "rotate-90" : ""
+          }`}
+        >
+          <p className={`text-white-3 text-md font-medium`}>❯</p>
         </div>
-      </div>
-      {expanded && (
-        <div className="bg-black-3 z-0 rounded-br-xl rounded-bl-xl p-4 outline-1 outline-[#373737]">
-          {showExpanded(text)}
-        </div>
-      )}
-    </>
+      </motion.div>
+      <AnimatePresence initial={false}>
+        {expanded && (
+          <motion.div
+            layout="position"
+            initial={{ height: 0 }}
+            animate={{ height: "auto" }}
+            exit={{ height: 0 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+          >
+            <div className="bg-black-2 border-black-5 z-0 rounded-br-xl rounded-bl-xl border p-4">
+              {showExpanded(text)}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
   );
 }

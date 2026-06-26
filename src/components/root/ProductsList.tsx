@@ -1,8 +1,24 @@
 import { Product } from "@/@types/Product";
-import { Item, itemDetails } from "./Item";
+import { Item } from "./Item";
 import { useMemo } from "react";
+import { motion } from "motion/react";
 
-export default function ProductsList({ products }: { products: Product[] }) {
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 1,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1 },
+};
+
+export function ProductsList({ products }: { products: Product[] }) {
   const items = useMemo(() => {
     return products.map((product) => {
       return {
@@ -21,10 +37,21 @@ export default function ProductsList({ products }: { products: Product[] }) {
   let generatedItems = useMemo(
     () =>
       items.map((item) => (
-        <Item className="w-[calc(25%-1rem)]" {...item} key={item.id} />
+        <motion.div variants={itemVariants} key={item.id}>
+          <Item className="w-[calc(25%-1rem)]" {...item} />
+        </motion.div>
       )),
     [items],
   );
 
-  return generatedItems;
+  return (
+    <motion.div
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      className="mt-16 flex w-full flex-wrap justify-between gap-y-8"
+    >
+      {generatedItems}
+    </motion.div>
+  );
 }

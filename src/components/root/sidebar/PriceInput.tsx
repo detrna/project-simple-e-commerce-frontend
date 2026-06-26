@@ -1,7 +1,6 @@
 import { ProductQueries } from "@/@types/ProductQueries";
-import useParseSearchQuery from "@/hooks/root/useParseSearchQuery";
+import { useParseSearchQuery } from "@/hooks/root/useParseSearchQuery";
 import { pushNewQuery } from "@/lib/router/pushNewQuery";
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { useRouter } from "next/navigation";
 import { ReactNode, useCallback, useRef } from "react";
 
@@ -17,9 +16,9 @@ function InputTextField({
   const input = useRef<HTMLInputElement>(null);
 
   return (
-    <div className="flex items-center gap-8">
-      <div className="w-28">
-        <p className="text-white-3">{text}</p>
+    <div className="flex items-center gap-4">
+      <div className="w-20">
+        <p className="text-white-3 text-sm">{text}</p>
       </div>
       <form
         onSubmit={(e) => {
@@ -28,7 +27,7 @@ function InputTextField({
         }}
       >
         <input
-          className="text-white-2 bg-black-4 no-spinner w-full rounded-md p-1 px-4 outline-none"
+          className="text-white-2 bg-black-3 no-spinner w-full rounded-md p-1 px-4 text-sm outline-none"
           placeholder=": "
           ref={input}
           type="number"
@@ -55,7 +54,7 @@ export function PriceInput(): ReactNode {
   );
 
   return (
-    <div className="flex flex-col items-center gap-4">
+    <div className="flex flex-col items-center gap-2">
       <InputTextField
         objectKey="priceMin"
         text="From"

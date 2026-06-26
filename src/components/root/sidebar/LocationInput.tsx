@@ -1,7 +1,8 @@
 import { ProductQueries } from "@/@types/ProductQueries";
-import useParseSearchQuery from "@/hooks/root/useParseSearchQuery";
+import { useParseSearchQuery } from "@/hooks/root/useParseSearchQuery";
 import { pushNewQuery } from "@/lib/router/pushNewQuery";
 import { removeQuery } from "@/lib/router/removeQuery";
+import { motion } from "motion/react";
 import { useRouter } from "next/navigation";
 import { ReactNode, useMemo, useRef } from "react";
 
@@ -14,7 +15,7 @@ function AddedLocation({
 }): ReactNode {
   return (
     <div className="flex flex-col items-center gap-8">
-      <div className="bg-black-5 text-white-2 text-md flex w-full items-center justify-between rounded-md px-4 py-2 font-medium">
+      <div className="bg-black-4 text-white-2 text-md flex w-full items-center justify-between rounded-md px-4 py-2 font-medium">
         <p>{text}</p>
         <p
           onClick={() => removeLocation(text)}
@@ -27,7 +28,7 @@ function AddedLocation({
   );
 }
 
-export default function LocationInput(): ReactNode {
+export function LocationInput(): ReactNode {
   const router = useRouter();
   const locationsInput = useRef<HTMLInputElement>(null);
 
@@ -69,7 +70,7 @@ export default function LocationInput(): ReactNode {
   };
 
   return (
-    <div className="flex flex-col gap-4">
+    <motion.div layout="position" className="flex flex-col gap-4">
       <div className="flex">
         <form
           onSubmit={(e) => {
@@ -79,7 +80,7 @@ export default function LocationInput(): ReactNode {
         >
           <input
             ref={locationsInput}
-            className="bg-black-2 text-white-1 h-[6vh] w-full rounded-md px-4 outline-none"
+            className="bg-black-3 text-white-1 h-[6vh] w-full rounded-md px-4 outline-none"
             placeholder="Cities . . ."
           />
         </form>
@@ -95,6 +96,6 @@ export default function LocationInput(): ReactNode {
             ></AddedLocation>
           );
         })}
-    </div>
+    </motion.div>
   );
 }

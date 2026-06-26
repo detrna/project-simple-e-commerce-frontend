@@ -1,4 +1,5 @@
 import { baseURL } from "@/@types/EnvConstants";
+import { motion } from "motion/react";
 import Link from "next/link";
 
 export type itemDetails = {

@@ -1,12 +1,7 @@
-import { ReactNode, useContext } from "react";
-import { ProductQueries } from "@/@types/ProductQueries";
-import FilterBox from "./FilterBox";
+import { ReactNode } from "react";
+import { FilterBox } from "./FilterBox";
 
-export default function FilterContainer({
-  filters,
-}: {
-  filters: string[];
-}): ReactNode {
+export function FilterContainer({ filters }: { filters: string[] }): ReactNode {
   return (
     <>
       {filters.map((k, i) => (
