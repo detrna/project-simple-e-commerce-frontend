@@ -20,15 +20,8 @@ export function FilterBox({ text }: { text: string }): ReactNode {
   const [expanded, setExpanded] = useState<boolean>(false);
 
   return (
-    <motion.div
-      layout
-      transition={{ duration: 0.3, ease: "easeInOut" }}
-      className="overflow-hidden"
-    >
+    <motion.div>
       <motion.div
-        layout="position"
-        transition={{ duration: 0.3, ease: "easeInOut" }}
-        whileHover={{ backgroundColor: "var(--color-black-4)" }}
         className={`bg-black-3 border-black-5 z-10 flex cursor-pointer items-center justify-between border p-2 pr-3 ${
           expanded ? `rounded-tl-md rounded-tr-md` : `rounded-md`
         }`}
@@ -51,11 +44,11 @@ export function FilterBox({ text }: { text: string }): ReactNode {
       <AnimatePresence initial={false}>
         {expanded && (
           <motion.div
-            layout="position"
             initial={{ height: 0 }}
             animate={{ height: "auto" }}
             exit={{ height: 0 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="overflow-hidden"
           >
             <div className="bg-black-2 border-black-5 z-0 rounded-br-xl rounded-bl-xl border p-4">
               {showExpanded(text)}

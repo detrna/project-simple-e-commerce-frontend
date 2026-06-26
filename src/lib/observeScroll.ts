@@ -16,7 +16,7 @@ export function observeScroll({
       }
     },
     {
-      rootMargin: "150px",
+      rootMargin: "200px",
     },
   );
 

@@ -10,7 +10,6 @@ import { Sidebar } from "@/components/root/Sidebar";
 import { useProduct } from "@/hooks/root/useProduct";
 import { useObserver } from "@/hooks/root/useObserver";
 import { useCategories } from "@/hooks/root/useCategories";
-
 import { useParseSearchQuery } from "@/hooks/root/useParseSearchQuery";
 
 export default function Home() {
@@ -35,8 +34,6 @@ export default function Home() {
           }}
         />
 
-        {/* <div className="mt-16 flex w-full flex-wrap justify-between gap-y-8">
-        </div> */}
         <ProductsList products={products} />
 
         <ScrollObserver
