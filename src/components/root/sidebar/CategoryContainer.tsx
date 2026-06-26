@@ -23,13 +23,13 @@ export function CategoryContainer({
         key: "category",
       });
 
-    pushNewQuery<ProductQueries>({ router, currentQuery, newQuery });
+    pushNewQuery({ router, currentQuery, newQuery });
   };
 
   return categories.map((c) => (
     <motion.div
       whileHover={{ backgroundColor: "var(--color-black-4)" }}
-      className="flex cursor-pointer items-center gap-2 rounded-lg p-1"
+      className="flex cursor-pointer items-center gap-3 rounded-lg p-1"
       key={c.name}
       onClick={() => {
         addCategory({ category: c.name.toUpperCase() });

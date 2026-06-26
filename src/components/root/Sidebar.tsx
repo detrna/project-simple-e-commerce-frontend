@@ -12,7 +12,7 @@ export type SidebarProps = {
 
 export function Sidebar({ categories, filters }: SidebarProps) {
   return (
-    <div className="fixed top-[10vh] left-0 h-screen w-64 p-4">
+    <div className="fixed top-[10vh] left-0 z-10 h-screen w-64 p-4 shadow-md">
       <div className="flex h-full w-[20vw] flex-col gap-4">
         <SidebarContainer
           header="CATEGORIES"

@@ -1,9 +1,24 @@
 "use client";
 
-import { motion } from "motion/react";
+import { useSearchRecomendations } from "@/hooks/nav/useSearchRecomendations";
+import { AnimatePresence, motion } from "motion/react";
+import { useRef, useState } from "react";
+import { handleSearch, SearchRecomendation } from "./SearchRecomendations";
+
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useParseSearchQuery } from "@/hooks/root/useParseSearchQuery";
 
 export function Navbar() {
+  const router = useRouter();
+
+  const [searchFocus, setSearchFocus] = useState<boolean>(false);
+
+  const { currentQuery } = useParseSearchQuery();
+  const { searchRecomendations, handleSearchInput } = useSearchRecomendations();
+
+  const searchInputRef = useRef<HTMLInputElement>(null);
+
   return (
     <div className="bg-black-1 flex h-[7.5vh] items-center gap-12 px-4">
       <div className="flex w-[14vw] justify-center">
@@ -13,11 +28,34 @@ export function Navbar() {
           </h1>
         </Link>
       </div>
-      <div className="bg-black-2 flex-1 rounded-md px-4 py-1">
-        <input
-          className="bg-black-2 text-white-1 w-full opacity-35 outline-none"
-          placeholder="Search here . . ."
-        ></input>
+      <div className="bg-black-2 relative min-w-0 flex-1 rounded-md px-4 py-1">
+        <div className="flex w-full flex-col">
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              setSearchFocus(false);
+              handleSearch({
+                router,
+                currentQuery,
+                input: searchInputRef.current?.value.toUpperCase() ?? "",
+              });
+            }}
+          >
+            <input
+              onClick={() => setSearchFocus(searchFocus ? false : true)}
+              onBlur={() => setSearchFocus(false)}
+              onChange={(e) => handleSearchInput(e.target.value)}
+              ref={searchInputRef}
+              className="bg-black-2 text-white-1 w-full opacity-35 outline-none"
+              placeholder="Search here . . ."
+            ></input>
+          </form>
+        </div>
+        <AnimatePresence>
+          {searchFocus && searchRecomendations.length !== 0 && (
+            <SearchRecomendation recomendations={searchRecomendations} />
+          )}
+        </AnimatePresence>
       </div>
       <motion.div
         whileHover={{ backgroundColor: "var(--color-black-3)" }}

@@ -44,7 +44,7 @@ export function PriceInput(): ReactNode {
 
   const handlePriceChange = useCallback(
     (newQuery: ProductQueries) => {
-      pushNewQuery<ProductQueries>({
+      pushNewQuery({
         router,
         currentQuery,
         newQuery,

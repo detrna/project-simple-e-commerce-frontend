@@ -1,14 +1,14 @@
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { objectToSearchQuery } from "./objectToSearchQuery";
 
-export function pushNewQuery<T extends Record<string, any>>({
+export function pushNewQuery({
   router,
   currentQuery,
   newQuery,
 }: {
   router: AppRouterInstance;
-  currentQuery: T;
-  newQuery: T;
+  currentQuery: Record<string, any>;
+  newQuery: Record<string, any>;
 }): void {
   const query: Record<string, any> = {
     ...currentQuery,

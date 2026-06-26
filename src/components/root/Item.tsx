@@ -44,7 +44,7 @@ function truncateText(text: string, maxLength: number): string {
 }
 
 export function Item(props: itemDetails) {
-  const displayName = truncateText(props.name, 15);
+  const displayName = truncateText(props.name, 13);
 
   return (
     <div className="flex w-[16vw] flex-col justify-center gap-1">

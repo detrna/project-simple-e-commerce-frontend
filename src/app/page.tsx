@@ -26,16 +26,13 @@ export default function Home() {
         categories={categories}
         filters={["Price", "Rating", "Locations"]}
       />
-
       <div className="ml-[22vw] flex flex-1 flex-col gap-4">
         <BtnSort
           log={() => {
             console.log(scrollTrigger);
           }}
         />
-
         <ProductsList products={products} />
-
         <ScrollObserver
           hasMore={hasMore.current}
           observerTarget={observerTarget as React.RefObject<HTMLDivElement>}
