@@ -2,7 +2,7 @@
 
 import { useSearchRecomendations } from "@/hooks/nav/useSearchRecomendations";
 import { AnimatePresence, motion } from "motion/react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { handleSearch, SearchRecomendation } from "./SearchRecomendations";
 
 import Link from "next/link";
@@ -19,6 +19,25 @@ export function Navbar() {
 
   const searchInputRef = useRef<HTMLInputElement>(null);
 
+  function handleKeyDown(e: KeyboardEvent) {
+    if (e.key === "/") return;
+    if (searchFocus) return;
+
+    handleSearchInput(e.key);
+
+    setSearchFocus(true);
+
+    searchInputRef.current?.focus();
+  }
+
+  useEffect(() => {
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [searchFocus]);
+
   return (
     <div className="bg-black-1 flex h-[7.5vh] items-center gap-12 px-4">
       <div className="flex w-[14vw] justify-center">
@@ -33,7 +52,7 @@ export function Navbar() {
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              setSearchFocus(false);
+              searchInputRef.current?.blur();
               handleSearch({
                 router,
                 currentQuery,
@@ -42,11 +61,15 @@ export function Navbar() {
             }}
           >
             <input
+              onKeyDown={(e) => {
+                if (e.key === "/") e.preventDefault();
+              }}
               onClick={() => setSearchFocus(searchFocus ? false : true)}
               onBlur={() => setSearchFocus(false)}
               onChange={(e) => handleSearchInput(e.target.value)}
               ref={searchInputRef}
               className="bg-black-2 text-white-1 w-full opacity-35 outline-none"
+              pattern="[a-zA-Z]+"
               placeholder="Search here . . ."
             ></input>
           </form>

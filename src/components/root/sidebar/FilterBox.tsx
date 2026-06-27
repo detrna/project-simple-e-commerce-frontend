@@ -22,9 +22,17 @@ export function FilterBox({ text }: { text: string }): ReactNode {
   return (
     <motion.div>
       <motion.div
-        className={`bg-black-3 border-black-5 z-10 flex cursor-pointer items-center justify-between border p-2 pr-3 ${
-          expanded ? `rounded-tl-md rounded-tr-md` : `rounded-md`
-        }`}
+        animate={{
+          borderBottomLeftRadius: expanded ? "0px" : "6px",
+          borderBottomRightRadius: expanded ? "0px" : "6px",
+          borderTopLeftRadius: "6px",
+          borderTopRightRadius: "6px",
+          transition: expanded
+            ? { delay: 0, duration: 0.1 }
+            : { delay: 0.2, duration: 0.1 },
+        }}
+        whileHover={{ backgroundColor: "var(--color-black-4)" }}
+        className={`bg-black-3 border-black-5 } z-10 flex cursor-pointer items-center justify-between border p-2 pr-3`}
         onClick={() => {
           setExpanded(expanded ? false : true);
         }}

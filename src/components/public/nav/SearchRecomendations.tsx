@@ -1,9 +1,10 @@
 import { useParseSearchQuery } from "@/hooks/root/useParseSearchQuery";
 import { pushNewQuery } from "@/lib/router/pushNewQuery";
 import { useRouter } from "next/navigation";
-import { motion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { dropdown, easeInOutTransition } from "@/lib/animation";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { removeQuery } from "@/lib/router/removeQuery";
 
 export const handleSearch = ({
   router,
@@ -14,6 +15,8 @@ export const handleSearch = ({
   currentQuery: Record<string, any>;
   input: string;
 }): void => {
+  if (input === "") return removeQuery({ router, currentQuery, key: "search" });
+
   return pushNewQuery({
     router,
     currentQuery,
@@ -31,6 +34,7 @@ export function SearchRecomendation({
 
   return (
     <motion.div
+      layout
       key="dropdown"
       variants={dropdown}
       initial="initial"
@@ -39,18 +43,30 @@ export function SearchRecomendation({
       transition={easeInOutTransition}
       className="bg-black-2 border-black-5 absolute top-full left-0 -z-50 mt-4 flex w-full flex-col overflow-visible rounded-lg border px-2 py-2 shadow-2xl"
     >
-      {recomendations.map((v, i) => (
-        <motion.div
-          whileHover={{ backgroundColor: "var(--color-black-5)" }}
-          className="text-white-3 -1 w-full cursor-pointer rounded-2xl px-2 py-0.5"
-          onClick={() =>
-            handleSearch({ router, currentQuery, input: v.toUpperCase() })
-          }
-          key={i}
-        >
-          {v}
-        </motion.div>
-      ))}
+      <AnimatePresence initial={false}>
+        {recomendations.map((v) => (
+          <motion.div
+            key={v}
+            layout
+            variants={dropdown}
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            style={{ overflow: "hidden" }}
+            transition={easeInOutTransition}
+          >
+            <motion.div
+              whileHover={{ backgroundColor: "var(--color-black-5)" }}
+              className="text-white-3 -1 w-full cursor-pointer rounded-2xl px-2 py-0.5"
+              onClick={() =>
+                handleSearch({ router, currentQuery, input: v.toUpperCase() })
+              }
+            >
+              {v}
+            </motion.div>
+          </motion.div>
+        ))}
+      </AnimatePresence>
     </motion.div>
   );
 }
