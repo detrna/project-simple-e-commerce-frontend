@@ -2,6 +2,7 @@ import { Product } from "@/@types/Product";
 import { Item } from "./Item";
 import { useMemo } from "react";
 import { motion } from "motion/react";
+import { delay } from "motion";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -16,6 +17,7 @@ const containerVariants = {
 const itemVariants = {
   hidden: { opacity: 0 },
   visible: { opacity: 1 },
+  transition: { delay: 1 },
 };
 
 export function ProductsList({ products }: { products: Product[] }) {

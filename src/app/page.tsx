@@ -2,7 +2,6 @@
 
 import React from "react";
 
-import { BtnSort } from "@/components/root/BtnSort";
 import { ProductsList } from "@/components/root/ProductsList";
 import { ScrollObserver } from "@/components/public/observer/ScrollObserver";
 import { Sidebar } from "@/components/root/Sidebar";
@@ -11,6 +10,7 @@ import { useProduct } from "@/hooks/root/useProduct";
 import { useObserver } from "@/hooks/root/useObserver";
 import { useCategories } from "@/hooks/root/useCategories";
 import { useParseSearchQuery } from "@/hooks/root/useParseSearchQuery";
+import { SortField } from "@/components/root/SortField";
 
 export default function Home() {
   const { searchParams } = useParseSearchQuery();
@@ -27,11 +27,8 @@ export default function Home() {
         filters={["Price", "Rating", "Locations"]}
       />
       <div className="ml-[22vw] flex flex-1 flex-col gap-4">
-        <BtnSort
-          log={() => {
-            console.log(scrollTrigger);
-          }}
-        />
+        <SortField></SortField>
+
         <ProductsList products={products} />
         <ScrollObserver
           hasMore={hasMore.current}
