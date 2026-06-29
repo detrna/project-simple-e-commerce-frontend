@@ -9,4 +9,6 @@ export type Product = {
   createdAt: Date;
   store?: Store;
   variants: Variant[];
+  priceMin: number;
+  sold: number;
 };

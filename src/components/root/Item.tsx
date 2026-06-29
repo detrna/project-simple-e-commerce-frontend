@@ -70,9 +70,11 @@ export function Item(props: itemDetails) {
             <p className="text-white-1 pt-0.5 text-[1rem]">{props.star}</p>
             <p className="text-white-1 text-lg">★</p>
           </div>
-          <p className="text-white-2 whitespace-nowrap">
-            {formatSold(props.sold)} sold
-          </p>
+          {props.sold !== 0 && (
+            <p className="text-white-2 whitespace-nowrap">
+              {formatSold(props.sold)} sold
+            </p>
+          )}
         </div>
       </div>
     </div>

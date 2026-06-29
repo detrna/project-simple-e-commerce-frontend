@@ -29,9 +29,9 @@ export function ProductsList({ products }: { products: Product[] }) {
         image: "/item.jpg",
         store: product.store!.name,
         address: product.store!.address,
-        price: product.variants[0].price,
+        price: product.priceMin,
         star: 5,
-        sold: 5000,
+        sold: product.sold,
       };
     });
   }, [products]);
