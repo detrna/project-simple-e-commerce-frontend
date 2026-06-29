@@ -52,15 +52,19 @@ export function FilterBox({ text }: { text: string }): ReactNode {
       <AnimatePresence initial={false}>
         {expanded && (
           <motion.div
+            layout
             initial={{ height: 0 }}
             animate={{ height: "auto" }}
             exit={{ height: 0 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
             className="overflow-hidden"
           >
-            <div className="bg-black-2 border-black-5 z-0 rounded-br-xl rounded-bl-xl border p-4">
+            <motion.div
+              layout
+              className="bg-black-2 border-black-5 z-0 rounded-br-xl rounded-bl-xl border p-4"
+            >
               {showExpanded(text)}
-            </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>

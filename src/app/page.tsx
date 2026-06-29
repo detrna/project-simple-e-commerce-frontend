@@ -22,10 +22,7 @@ export default function Home() {
 
   return (
     <div className="flex gap-8 p-8">
-      <Sidebar
-        categories={categories}
-        filters={["Price", "Rating", "Locations"]}
-      />
+      <Sidebar categories={categories} filters={["Price", "Locations"]} />
       <div className="ml-[22vw] flex flex-1 flex-col gap-4">
         <SortField></SortField>
 

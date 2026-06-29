@@ -20,6 +20,16 @@ export function Navbar() {
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   function handleKeyDown(e: KeyboardEvent) {
+    const active = document.activeElement;
+
+    if (
+      active instanceof HTMLInputElement ||
+      active instanceof HTMLTextAreaElement ||
+      active instanceof HTMLSelectElement ||
+      active?.getAttribute("contenteditable") === "true"
+    )
+      return;
+
     if (e.key === "/") return;
     if (searchFocus) return;
 

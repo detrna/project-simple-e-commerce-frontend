@@ -2,7 +2,7 @@ import { ProductQueries } from "@/@types/ProductQueries";
 import { useParseSearchQuery } from "@/hooks/root/useParseSearchQuery";
 import { pushNewQuery } from "@/lib/router/pushNewQuery";
 import { removeQuery } from "@/lib/router/removeQuery";
-import { motion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { useRouter } from "next/navigation";
 import { ReactNode, useMemo, useRef } from "react";
 
@@ -14,17 +14,26 @@ function AddedLocation({
   removeLocation: (location: string) => void;
 }): ReactNode {
   return (
-    <div className="flex flex-col items-center gap-8">
-      <div className="bg-black-4 text-white-2 text-md flex w-full items-center justify-between rounded-md px-4 py-2 font-medium">
-        <p>{text}</p>
+    <motion.div
+      layout
+      initial={{ x: -20, opacity: 0 }}
+      animate={{ x: 0, opacity: 1 }}
+      exit={{ x: -20, opacity: 0 }}
+      className="flex items-center gap-8"
+    >
+      <motion.div
+        layout
+        className="bg-black-4 text-white-2 text-md flex w-full items-center justify-between gap-2 rounded-md px-4 py-2 font-medium"
+      >
+        <p className="m-auto">{text}</p>
         <p
           onClick={() => removeLocation(text)}
-          className="scale-x-[1.3] cursor-pointer text-xs font-semibold"
+          className="m-auto scale-x-[1.3] cursor-pointer text-xs font-semibold"
         >
           X
         </p>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }
 
@@ -70,8 +79,8 @@ export function LocationInput(): ReactNode {
   };
 
   return (
-    <motion.div layout="position" className="flex flex-col gap-4">
-      <div className="flex">
+    <motion.div layout className="flex flex-col gap-4">
+      <motion.div layout className="flex">
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -84,18 +93,25 @@ export function LocationInput(): ReactNode {
             placeholder="Cities . . ."
           />
         </form>
-      </div>
-      {locationsArray.length !== 0 &&
-        locationsArray.map((location, i) => {
-          if (location === "" || !location) return;
-          return (
-            <AddedLocation
-              key={i}
-              text={location!}
-              removeLocation={removeLocation}
-            ></AddedLocation>
-          );
-        })}
+      </motion.div>
+      <motion.div
+        layout
+        className="flex justify-start gap-4 overflow-x-auto pb-2"
+      >
+        <AnimatePresence>
+          {locationsArray.length !== 0 &&
+            locationsArray.map((location, i) => {
+              if (location === "" || !location) return;
+              return (
+                <AddedLocation
+                  key={location}
+                  text={location!}
+                  removeLocation={removeLocation}
+                ></AddedLocation>
+              );
+            })}
+        </AnimatePresence>
+      </motion.div>
     </motion.div>
   );
 }
