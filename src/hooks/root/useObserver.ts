@@ -1,26 +1,28 @@
 import { observeScroll } from "@/lib/observeScroll";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 
-export function useObserver(dependencies: React.DependencyList = []) {
+export function useObserver(params: URLSearchParams) {
   const observerTarget = useRef<HTMLDivElement>(null);
-
+  const formattedParams = new URLSearchParams(params.toString());
   const [scrollTrigger, setScrollTrigger] = useState<number>(Date.now());
-  const activateScroll = (): void => {
+
+  const activateScroll = useCallback(() => {
     setScrollTrigger(Date.now());
-  };
+  }, []);
 
   useEffect(() => {
-    if (observerTarget.current) {
-      const disconnect = observeScroll({
-        activate: () => activateScroll(),
-        observerTarget: observerTarget as React.RefObject<HTMLDivElement>,
-      });
+    const currentTarget = observerTarget.current;
+    if (!currentTarget) return;
 
-      return () => {
-        if (disconnect) disconnect();
-      };
-    }
-  }, [...dependencies]);
+    const disconnect = observeScroll({
+      activate: activateScroll,
+      observerTarget: observerTarget,
+    });
+
+    return () => {
+      if (disconnect) disconnect();
+    };
+  }, [formattedParams]);
 
   return { observerTarget, scrollTrigger };
 }

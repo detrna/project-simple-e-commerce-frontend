@@ -14,7 +14,7 @@ import { SortField } from "@/components/root/SortField";
 
 export default function Home() {
   const { searchParams } = useParseSearchQuery();
-  const { observerTarget, scrollTrigger } = useObserver([searchParams]);
+  const { observerTarget, scrollTrigger } = useObserver(searchParams);
   const { products, productsLoading, hasMore } = useProduct({
     dependencies: [scrollTrigger],
   });
