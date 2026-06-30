@@ -79,8 +79,8 @@ export function LocationInput(): ReactNode {
   };
 
   return (
-    <motion.div layout className="flex flex-col gap-4">
-      <motion.div layout className="flex">
+    <div className="flex flex-col gap-4">
+      <div className="flex">
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -93,14 +93,11 @@ export function LocationInput(): ReactNode {
             placeholder="Cities . . ."
           />
         </form>
-      </motion.div>
-      <motion.div
-        layout
-        className="flex justify-start gap-4 overflow-x-auto pb-2"
-      >
+      </div>
+      <div className="flex justify-start gap-4 overflow-x-auto pb-2">
         <AnimatePresence>
           {locationsArray.length !== 0 &&
-            locationsArray.map((location, i) => {
+            locationsArray.map((location) => {
               if (location === "" || !location) return;
               return (
                 <AddedLocation
@@ -111,7 +108,7 @@ export function LocationInput(): ReactNode {
               );
             })}
         </AnimatePresence>
-      </motion.div>
-    </motion.div>
+      </div>
+    </div>
   );
 }

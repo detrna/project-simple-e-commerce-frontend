@@ -8,7 +8,7 @@ export function SidebarContainer({
   component: ReactNode;
 }): ReactNode {
   return (
-    <div className="bg-black-2 border-black-5 z-10 flex flex-col gap-3 rounded-lg border px-4 py-4">
+    <div className="bg-sidebar border-border z-10 flex flex-col gap-3 rounded-lg border px-4 py-4">
       <div>
         <p className="text-white-3 text-sm font-semibold">{header}</p>
       </div>

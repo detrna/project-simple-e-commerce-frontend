@@ -1,13 +1,16 @@
 "use client";
 
-import { useSearchRecomendations } from "@/hooks/nav/useSearchRecomendations";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+
 import { handleSearch, SearchRecomendation } from "./SearchRecomendations";
 
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useSearchRecomendations } from "@/hooks/nav/useSearchRecomendations";
 import { useParseSearchQuery } from "@/hooks/root/useParseSearchQuery";
+import { useAuthStore } from "@/stores/auth.store";
+import { RegisterForm } from "./auth/RegisterForm";
 
 export function Navbar() {
   const router = useRouter();
@@ -18,6 +21,9 @@ export function Navbar() {
   const { searchRecomendations, handleSearchInput } = useSearchRecomendations();
 
   const searchInputRef = useRef<HTMLInputElement>(null);
+
+  const user = useAuthStore((state) => state.user);
+  const [openSignIn, setOpenSignIn] = useState(false);
 
   function handleKeyDown(e: KeyboardEvent) {
     const active = document.activeElement;
@@ -49,7 +55,7 @@ export function Navbar() {
   }, [searchFocus]);
 
   return (
-    <div className="bg-black-1 flex h-[7.5vh] items-center gap-12 px-4">
+    <div className="bg-card flex h-[7.5vh] items-center gap-12 px-4">
       <div className="flex w-[14vw] justify-center">
         <Link href={"/"}>
           <h1 className="text-white-1 cursor-pointer text-[1.2rem] font-normal whitespace-nowrap">
@@ -57,7 +63,7 @@ export function Navbar() {
           </h1>
         </Link>
       </div>
-      <div className="bg-black-2 relative min-w-0 flex-1 rounded-md px-4 py-1">
+      <div className="bg-muted relative min-w-0 flex-1 rounded-md px-4 py-1">
         <div className="flex w-full flex-col">
           <form
             onSubmit={(e) => {
@@ -97,8 +103,32 @@ export function Navbar() {
         <img className="aspect-square w-8" src={"/ShoppingCartSimple.svg"} />
       </motion.div>
       <div className="flex h-full items-center gap-4">
-        <p className="text-white-1 text-[1.2rem] font-normal">Username</p>
-        <img className="size-8 cursor-pointer" src={"/avatar.svg"}></img>
+        {user ? (
+          <>
+            <p className="text-white-1 text-[1.2rem] font-normal">
+              {user.name}
+            </p>
+            <img className="size-8 cursor-pointer" src={"/avatar.svg"} />
+          </>
+        ) : (
+          <>
+            <motion.div
+              whileHover={{ backgroundColor: "var(--color-black-3)" }}
+              className="bg-black-2 text-white-2 cursor-pointer rounded-lg p-1 px-4 font-semibold"
+              onClick={() => setOpenSignIn(true)}
+            >
+              Sign in
+            </motion.div>
+            {openSignIn && (
+              <motion.div
+                className="item-center fixed inset-0 flex justify-center bg-black/50"
+                onClick={() => setOpenSignIn(false)}
+              >
+                <RegisterForm />
+              </motion.div>
+            )}
+          </>
+        )}
       </div>
     </div>
   );

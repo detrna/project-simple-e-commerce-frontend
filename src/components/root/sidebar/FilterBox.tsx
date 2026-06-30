@@ -20,7 +20,7 @@ export function FilterBox({ text }: { text: string }): ReactNode {
   const [expanded, setExpanded] = useState<boolean>(false);
 
   return (
-    <motion.div>
+    <div>
       <motion.div
         animate={{
           borderBottomLeftRadius: expanded ? "0px" : "6px",
@@ -32,7 +32,7 @@ export function FilterBox({ text }: { text: string }): ReactNode {
             : { delay: 0.2, duration: 0.1 },
         }}
         whileHover={{ backgroundColor: "var(--color-black-4)" }}
-        className={`bg-black-3 border-black-5 } z-10 flex cursor-pointer items-center justify-between border p-2 pr-3`}
+        className={`bg-sidebar-accent border-border } z-10 flex cursor-pointer items-center justify-between border p-2 pr-3`}
         onClick={() => {
           setExpanded(expanded ? false : true);
         }}
@@ -52,22 +52,18 @@ export function FilterBox({ text }: { text: string }): ReactNode {
       <AnimatePresence initial={false}>
         {expanded && (
           <motion.div
-            layout
             initial={{ height: 0 }}
-            animate={{ height: "auto" }}
-            exit={{ height: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
             className="overflow-hidden"
           >
-            <motion.div
-              layout
-              className="bg-black-2 border-black-5 z-0 rounded-br-xl rounded-bl-xl border p-4"
-            >
+            <div className="bg-sidebar border-border z-0 rounded-br-xl rounded-bl-xl border p-4">
               {showExpanded(text)}
-            </motion.div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.div>
+    </div>
   );
 }

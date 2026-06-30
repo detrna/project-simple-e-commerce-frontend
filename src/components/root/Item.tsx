@@ -50,7 +50,11 @@ export function Item(props: itemDetails) {
     <div className="flex w-[16vw] flex-col justify-center gap-1">
       <div className="flex aspect-square items-center justify-center overflow-hidden rounded-3xl">
         <Link className="size-full" href={baseURL + "/products/" + props.id}>
-          <img className="size-full" src={props.image} alt={props.name} />
+          <img
+            className="size-full brightness-75"
+            src={props.image}
+            alt={props.name}
+          />
         </Link>
       </div>
       <div className="flex justify-between px-3 pb-3">

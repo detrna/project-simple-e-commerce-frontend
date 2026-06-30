@@ -14,4 +14,17 @@ api.interceptors.response.use(
   },
 );
 
+const authApi = axios.create({
+  baseURL: apiURL,
+});
+
+authApi.interceptors.response.use(
+  (response) => {
+    return response.data;
+  },
+  (error) => {
+    return Promise.reject(error);
+  },
+);
+
 export default api;
